@@ -29,7 +29,7 @@ public class TodoHandler : Notifiable,
         var todo = new TodoItem(command.Title, command.User, command.Date);
 
         _repository.Create(todo);
-        return new GenericCommandResult(true, "Tarefa salva", todo);
+        return new GenericCommandResult(true, $"Tarefa salva - {todo.Title}", todo);
     }
 
     public ICommandResult Handle(UpdateTodoCommand command)
