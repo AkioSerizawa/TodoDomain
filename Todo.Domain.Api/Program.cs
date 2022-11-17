@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Todo.Domain.Handlers;
 using Todo.Domain.Infra.Contexts;
 using Todo.Domain.Infra.Repositories;
@@ -14,6 +16,21 @@ builder.Services.AddDbContext<TodoContext>(opt =>
 
 builder.Services.AddTransient<ITodoRepository, TodoRepository>();
 builder.Services.AddTransient<TodoHandler, TodoHandler>();
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://securetoken.goole.com/todo-1821a";
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = "https://securetoken.goole.com/todo-1821a",
+            ValidateAudience = true,
+            ValidAudience = "todo-1821a",
+            ValidateLifetime = true
+        };
+    });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
